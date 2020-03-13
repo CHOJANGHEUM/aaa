@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="global.sesoc.web5.dao.BoardMapper">
+
+
+	<insert id="insertB" parameterType="board">
+
+		insert into
+		web5_board
+		(
+
+		boardnum
+		,id
+		,title
+		,contents
+		<if test="originalfile != null and originalfile != null">		<!-- 빈칸을 해주기.!!!!!!!!!!!!!!! -->
+			,originalfile
+			,savedfile
+		</if>
+
+		)
+		values
+
+		(
+		web5_board_seq.nextval
+		,#{id}
+		,#{title}
+		,#{contents}
+		<if test="originalfile != null and originalfile != null">		<!-- 빈칸을 해주기.!!!!!!!!!!!!!!! -->
+			,#{originalfile}
+			,#{savedfile}
+		</if>
+
+
+		)
+
+	</insert>
+
+<!-- 	<select id="boardList" resultType="board">
+
+		select
+
+		boardnum
+		,id
+		,title
+		,hits
+		,to_char(inputdate,'YYYY-MM-DD') inputdate
+		,originalfile
+		,savedfile
+
+		from
+		web5_board
+		order by
+		boardnum desc
+
+
+	</select> -->
+
+
+	<select id="readB" parameterType="int" resultType="board">
+
+		select
+
+		id
+		,title
+		,hits
+		,inputdate
+		,contents
+		,boardnum
+		,originalfile
+		,savedfile
+
+		from
+		web5_board
+		where boardnum =
+		#{n}
+
+
+
+	</select>
+
+
+
+
+
+	<update id="updateH" parameterType="int">
+
+		update web5_board set
+
+		hits =
+		hits+1
+
+		where boardnum = #{boardnum}
+
+
+	</update>
+
+
+
+	<delete id="delete" parameterType="int">
+
+		delete from web5_board where
+		boardnum =#{boardnum}
+
+	</delete>
+
+
+
+
+	<update id="updateB" parameterType="board">
+
+		update web5_board set
+
+		title =
+		#{title}
+		, contents = #{contents}
+
+
+		where boardnum =#{boardnum}
+
+
+	</update>
+
+
+
+	<insert id="insertR" parameterType="reply">
+
+
+		insert into
+		web5_reply
+		(
+
+		boardnum
+		,id
+		,text
+		,replynum
+
+
+		)
+		values
+
+		(
+		#{boardnum}
+		,#{id}
+		,#{text}
+		,web5_reply_seq.nextval
+
+		)
+	</insert>
+
+
+	<select id="readR" parameterType="int" resultType="reply">
+
+		select * from web5_reply
+
+		where boardnum =#{boardnum}
+
+	</select>
+
+	<select id="read1R" parameterType="int" resultType="reply">
+
+		select * from web5_reply
+
+		where replynum =#{replynum}
+
+	</select>
+
+
+	<update id="updateR" parameterType="reply">
+
+		update web5_reply
+		set
+
+		text =
+		#{text}
+
+		
+		where replynum =#{replynum}
+	</update>
+	
+	
+	<delete id="deleteR">
+	
+	delete from web5_reply where replynum =#{replynum}
+	
+	</delete>
+
+
+<select id="getTotal" parameterType="string" resultType="int">
+
+select 
+		count(*)
+	from 
+		web5_board 
+		
+		<if test="_parameter != null">
+	where 
+		title like '%' || #{searchText} || '%'
+	</if>
+
+
+
+</select>
+
+
+<!-- 현재 페이지 목록 (검색 필터링 후) -->
+<select id="boardList" parameterType="string" resultType="board">
+	select 
+		boardnum
+		, id
+		, title
+		, to_char(inputdate, 'YYYY-MM-DD') inputdate
+		, hits
+	from 
+		web5_board 
+		<if test="_parameter != null">
+	where 
+		title like '%' || #{searchText} || '%'
+	</if>
+	order by boardnum desc
+</select>
+
+
+
+</mapper>

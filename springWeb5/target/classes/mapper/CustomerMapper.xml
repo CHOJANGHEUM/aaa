@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="global.sesoc.web5.dao.CustomerMapper">
+
+
+	<insert id="insert" parameterType="member">
+
+		insert into
+		web5_member
+		(
+		id
+		,password
+		, name
+		, phone
+		, address
+		, email
+
+		)
+		values
+		(
+		#{id}
+		,#{password}
+		,#{name}
+		, #{phone}
+		, #{address}				<!-- inputdate default값 
+			있어서 여기 굳이 안써줘도 됨. -->
+		,#{email}
+		)
+	</insert>
+
+	<!-- 1명 회원정보 검색 parameter타입이 string이니 아무거나 적어도 가능. -->
+	<select id="getMember" parameterType="string"
+		resultType="member">
+
+
+		select * from web5_member where id like #{id}
+
+
+	</select>
+
+	<update id="update" parameterType="member">
+
+		update web5_member set
+
+		<if test="password != null and password != ''">		<!-- 빈칸을 해주기.!!!!!!!!!!!!!!! -->
+			password = #{password},
+
+
+		</if>
+		name = #{name}
+		, phone = #{phone}
+
+
+
+		, address= #{address}
+		, email =
+		#{email}
+
+
+		where id like #{id}
+
+
+	</update>
+
+	<delete id="deleteM">
+
+		delete from web5_member where password like #{password}
+
+	</delete>
+</mapper>
