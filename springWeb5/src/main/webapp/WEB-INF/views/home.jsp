@@ -11,7 +11,7 @@
 	<h1>Spring Web5 - SE Bank Step4</h1>
 
 	<c:if test="${sessionScope.logId!=null}">
-		<p>${sessionScope.logId}님환영해유!~</p>
+		<p>${sessionScope.logId}님환영해유!!!@@@~</p>
 		<ul>
 			<li><a href="member/myData">개인정보수정</a></li>
 			<li><a href="member/logout">로그아웃</a></li>
